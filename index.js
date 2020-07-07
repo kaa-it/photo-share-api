@@ -33,6 +33,11 @@ async function start() {
     app.get('/', (req, res) => res.end('Welcome to the PhotoShare API'))
     app.get('/playground', expressPlayground({ endpoint: '/graphql' }))
 
+    app.use(
+        '/img/photos', 
+        express.static(path.join(__dirname, 'assets', 'photos'))
+    )
+
     const httpServer = createServer(app)
     server.installSubscriptionHandlers(httpServer)
 

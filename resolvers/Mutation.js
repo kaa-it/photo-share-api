@@ -1,5 +1,7 @@
 const { authorizeWithGithub } = require('../lib')
 const fetch = require('node-fetch')
+const { uploadStream } = require('../lib')
+const path = require('path')
 
 module.exports = {
     async postPhoto(parent, args, { db, currentUser, pubsub }) {
@@ -15,6 +17,11 @@ module.exports = {
 
         const { insertedIds } = await db.collection('photos').insert(newPhoto)
         newPhoto.id = insertedIds[0]
+
+        let toPath = path.join(__dirname, '..', 'assets', 'photos', `${newPhoto.id}.jpg`)
+
+        const { stream } = await args.input.file
+        await uploadStream(stream, toPath)
 
         pubsub.publish('photo-added', { newPhoto })
 
