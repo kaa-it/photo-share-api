@@ -6,6 +6,7 @@ const typeDefs = readFileSync('./typeDefs.graphql', 'UTF-8')
 const resolvers = require('./resolvers')
 const { MongoClient } = require('mongodb')
 const { createServer } = require('http')
+const path = require('path')
 require('dotenv').config()
 
 async function start() {
